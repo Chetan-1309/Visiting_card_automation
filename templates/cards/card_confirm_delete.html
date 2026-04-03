@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Delete Card{% endblock %}
+
+{% block content %}
+<div class="form-card" style="text-align:center">
+  <h2>⚠ Delete Card?</h2>
+  <p>Are you sure you want to delete the card for <strong>{{ card.name|default:"this contact" }}</strong>?<br>
+  This action cannot be undone.</p>
+
+  <form method="post" style="margin-top:20px">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="{% url 'card_detail' card.pk %}" class="btn btn-outline">Cancel</a>
+  </form>
+</div>
+{% endblock %}

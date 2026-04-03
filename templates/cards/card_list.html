@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}My Cards{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>My Visiting Cards <span class="badge">{{ total }}</span></h1>
+  <a href="{% url 'card_upload' %}" class="btn btn-primary">+ Upload New Card</a>
+</div>
+
+<!-- SEARCH & FILTER FORM -->
+<form method="get" class="filter-form">
+  <div class="filter-row">
+    {{ form.search }}
+    {{ form.from_date }}
+    {{ form.to_date }}
+    <button type="submit" class="btn">Search</button>
+    <a href="{% url 'card_list' %}" class="btn btn-outline">Clear</a>
+    <a href="{% url 'card_export' %}" class="btn btn-success">⬇ Export Excel</a>
+  </div>
+</form>
+
+<!-- CARDS GRID -->
+{% if cards %}
+  <div class="cards-grid">
+    {% for card in cards %}
+      <div class="card-item">
+        <div class="card-photo">
+          <img src="{{ card.photo.url }}" alt="Visiting Card">
+        </div>
+        <div class="card-info">
+          <h3>{{ card.name|default:"Unknown Name" }}</h3>
+          <p class="card-title">{{ card.job_title }}</p>
+          <p class="card-company">🏢 {{ card.company }}</p>
+          {% if card.email %}<p>📧 {{ card.email }}</p>{% endif %}
+          {% if card.phone %}<p>📞 {{ card.phone }}</p>{% endif %}
+        </div>
+        <div class="card-actions">
+          <a href="{% url 'card_detail' card.pk %}" class="btn btn-sm">View</a>
+          <a href="{% url 'card_edit' card.pk %}"   class="btn btn-sm btn-outline">Edit</a>
+          <a href="{% url 'card_send' card.pk %}"   class="btn btn-sm btn-success">Send</a>
+          <a href="{% url 'card_delete' card.pk %}" class="btn btn-sm btn-danger">Delete</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty-state">
+    <p>No cards found. <a href="{% url 'card_upload' %}">Upload your first card!</a></p>
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Upload Card{% endblock %}
+
+{% block content %}
+<div class="form-card">
+  <h2>Upload Visiting Card</h2>
+  <p>Take a photo or scan a visiting card. We'll automatically extract the contact details for you.</p>
+
+  <!-- enctype="multipart/form-data" is REQUIRED for file uploads! -->
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label>Choose Card Photo</label>
+      {{ form.photo }}
+      {% if form.photo.errors %}
+        <span class="field-error">{{ form.photo.errors.0 }}</span>
+      {% endif %}
+    </div>
+
+    <div class="upload-hint">
+      💡 Tip: Use a clear, well-lit photo for best OCR results.
+    </div>
+
+    <button type="submit" class="btn btn-primary">Upload &amp; Extract Data</button>
+    <a href="{% url 'card_list' %}" class="btn btn-outline">Cancel</a>
+  </form>
+</div>
+{% endblock %}

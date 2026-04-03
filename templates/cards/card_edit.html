@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Edit Card – {{ card.name }}{% endblock %}
+
+{% block content %}
+<div class="form-card">
+  <h2>Review Extracted Data</h2>
+  <p>OCR has extracted the following information. Please correct any mistakes and save.</p>
+
+  <div class="card-preview">
+    <img src="{{ card.photo.url }}" alt="Card photo" style="max-width:300px; border-radius:8px;">
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="form-group">
+        <label>{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+          <span class="field-error">{{ field.errors.0 }}</span>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save Data</button>
+      <a href="{% url 'card_detail' card.pk %}" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
